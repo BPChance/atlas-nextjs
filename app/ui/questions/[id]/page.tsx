@@ -1,10 +1,7 @@
 import { fetchQuestion, fetchAnswers } from "@/lib/data";
 
-interface Props {
-  params: { id: string };
-}
-
-export default async function Page({ params }: Props) {
+export default async function Page(props: any) {
+  const { params } = props;
   const question = await fetchQuestion(params.id);
   const answers = await fetchAnswers(params.id);
   //   question.answer_id = answers[0]?.id;
