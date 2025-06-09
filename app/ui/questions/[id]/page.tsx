@@ -1,9 +1,12 @@
 import { fetchQuestion, fetchAnswers } from "@/lib/data";
 
-export default async function Page(props: { params: Record<string, string> }) {
-  const id = await props.params.id;
-  const question = await fetchQuestion(id);
-  const answers = await fetchAnswers(id);
+interface Props {
+  params: { id: string };
+}
+
+export default async function Page({ params }: Props) {
+  const question = await fetchQuestion(params.id);
+  const answers = await fetchAnswers(params.id);
   //   question.answer_id = answers[0]?.id;
 
   if (!question) {
