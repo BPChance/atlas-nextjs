@@ -1,10 +1,15 @@
 import { fetchQuestion, fetchAnswers } from "@/lib/data";
 
-export default async function Page({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function Page({ params }: PageProps) {
   const question = await fetchQuestion(params.id);
   const answers = await fetchAnswers(params.id);
-//   question.answer_id = answers[0]?.id;
-
+  //   question.answer_id = answers[0]?.id;
 
   if (!question) {
     return <div>Question not found</div>;
