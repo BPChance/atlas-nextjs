@@ -42,6 +42,27 @@ export async function fetchQuestions(id: string) {
   }
 }
 
+export async function fetchQuestion(id: string): Promise<Question | null> {
+  try {
+    const data = await sql<Question>`SELECT * FROM questions WHERE id = ${id}`;
+    return data.rows.length > 0 ? data.rows[0] : null;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch question.");
+  }
+}
+
+export async function fetchAnswers(question_id: string) {
+  try {
+    const data =
+      await sql`SELECT * FROM answers WHERE question_id = ${question_id}`;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch answers.");
+  }
+}
+
 export async function insertQuestion(
   question: Pick<Question, "title" | "topic_id" | "votes">
 ) {

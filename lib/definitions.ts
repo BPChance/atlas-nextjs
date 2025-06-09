@@ -14,8 +14,16 @@ export type Topic = {
 };
 
 export type Question = {
+  answer_id: any;
   id: string;
   title: string;
   topic_id: string;
   votes: number;
+};
+
+export type Answer = {
+  id: string;
+  question_id: string;
+  text: string;
+  created_at: string;
 };
