@@ -1,10 +1,10 @@
+import { acceptAnswer, addAnswer } from "@/lib/actions";
 import { fetchQuestion, fetchAnswers } from "@/lib/data";
 
 export default async function Page(props: any) {
   const { params } = props;
   const question = await fetchQuestion(params.id);
   const answers = await fetchAnswers(params.id);
-  //   question.answer_id = answers[0]?.id;
 
   if (!question) {
     return <div>Question not found</div>;
@@ -12,10 +12,12 @@ export default async function Page(props: any) {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">{question.title}</h1>
-      <form className="mb-6">
+      <form action={addAnswer} className="mb-6">
+        <input type="hidden" name="questionId" value={question.id} />
         <div className="flex items-center border border-gray-300 rounded px-3 py-2">
           <input
             type="text"
+            name="answer"
             placeholder="Answer question"
             className="flex-grow outline-none bg-transparent placeholder-gray-400"
           />
@@ -42,21 +44,31 @@ export default async function Page(props: any) {
               className="border p-3 rounded flex justify-between items-center"
             >
               <p>{answer.answer}</p>
-              <span className="ml-4">
+              <span className="ml-4 shrink-0">
                 {answer.id === question.answer_id ? (
-                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                     <img
                       src="/accepted.png"
                       alt="Accepted Answer"
-                      className="w-5 h-5"
+                      className="w-6 h-6"
                     />
                   </div>
                 ) : (
-                  <img
-                    src="/check.png"
-                    alt="Mark as Accepted"
-                    className="w-6 h-6"
-                  />
+                  <form action={acceptAnswer}>
+                    <input
+                      type="hidden"
+                      name="questionId"
+                      value={question.id}
+                    />
+                    <input type="hidden" name="answerId" value={answer.id} />
+                    <button type="submit">
+                      <img
+                        src="/check.png"
+                        alt="Mark as Accepted"
+                        className="w-6 h-6"
+                      />
+                    </button>
+                  </form>
                 )}
               </span>
             </div>

@@ -88,6 +88,17 @@ export async function insertTopic(topic: Pick<Topic, "title">) {
   }
 }
 
+export async function insertAnswer(answer: string, questionId: string) {
+  try {
+    const result =
+      await sql`INSERT INTO answers (answer, question_id) VALUES (${answer}, ${questionId}) RETURNING *`;
+    return result.rows[0];
+  } catch (error) {
+    console.error("Database Error (insertAnswer):", error);
+    throw new Error("Failed to insert answer.");
+  }
+}
+
 export async function incrementVotes(id: string) {
   try {
     const data =
@@ -96,5 +107,19 @@ export async function incrementVotes(id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to increment votes.");
+  }
+}
+
+export async function markAnswerAsAccepted(
+  questionId: string,
+  answerId: string
+) {
+  try {
+    await sql`
+        UPDATE questions SET answer_id = ${answerId}
+        WHERE id = ${questionId}`;
+  } catch (error) {
+    console.error("Database Error (acceptedAnswer):", error);
+    throw new Error("Failed to mark accepted answer");
   }
 }
