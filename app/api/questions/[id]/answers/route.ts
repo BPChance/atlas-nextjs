@@ -1,12 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { fetchAnswers } from "@/lib/data";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest) {
   try {
-    const answers = await fetchAnswers(params.id);
+    const url = new URL(request.url);
+    const segments = url.pathname.split("/");
+    const id = segments[segments.indexOf("questions") + 1];
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing question ID" },
+        { status: 400 }
+      );
+    }
+
+    const answers = await fetchAnswers(id);
     const result = answers.map(({ id, answer, question_id }) => ({
       id,
       answer,
