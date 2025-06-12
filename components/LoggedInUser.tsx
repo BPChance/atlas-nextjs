@@ -5,6 +5,7 @@ import Image from "next/image";
 
 export default function LoggedInUser() {
   const { data: session } = useSession();
+  console.log("Session:", session);
 
   if (!session?.user) return null;
 
