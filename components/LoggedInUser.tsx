@@ -5,7 +5,6 @@ import Image from "next/image";
 
 export default function LoggedInUser() {
   const { data: session } = useSession();
-  console.log("Session:", session);
 
   if (!session?.user) return null;
 
@@ -15,7 +14,7 @@ export default function LoggedInUser() {
     <div className="flex items-center gap-3 p-3">
       <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 border">
         {image ? (
-          <Image
+          <img
             src={image}
             alt="User Avatar"
             width={40}
